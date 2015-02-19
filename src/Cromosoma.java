@@ -6,18 +6,18 @@ public class Cromosoma {
 	private int numeroAtaques; 
 	private int elite;			//0 = No Elite, 1 = Elite
 	
-	public Cromosoma(int tamaño) {
+	public Cromosoma(int tamano) {
 		super();
 		ArrayList<Integer> filas =new ArrayList<Integer>();
 		ArrayList<Integer> columnas =new ArrayList<Integer>();
 		this.elementos=new ArrayList<Reina>();
 		Random rand= new Random();
 		int x,y;
-		for (int i = 0; i < tamaño; i++) {
+		for (int i = 0; i < tamano; i++) {
 			filas.add(i);
 			columnas.add(i);
 		}
-		for (int i = 0; i < tamaño; i++) {
+		for (int i = 0; i < tamano; i++) {
 			x=rand.nextInt(filas.size());
 			y=rand.nextInt(columnas.size());
 			//System.out.println(x+","+y);
