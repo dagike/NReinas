@@ -1,9 +1,9 @@
 
-public class reina {
+public class Reina {
 	private int posicionX;
 	private int posicionY;
 	
-	public reina(int posicionX, int posicionY) {
+	public Reina(int posicionX, int posicionY) {
 		super();
 		this.posicionX = posicionX;
 		this.posicionY = posicionY;

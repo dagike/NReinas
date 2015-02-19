@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Cromosoma {
-	private ArrayList<reina> elementos;
+	private ArrayList<Reina> elementos;
 	private int numeroAtaques; 
 	private int elite;			//0 = No Elite, 1 = Elite
 	
@@ -10,7 +10,7 @@ public class Cromosoma {
 		super();
 		ArrayList<Integer> filas =new ArrayList<Integer>();
 		ArrayList<Integer> columnas =new ArrayList<Integer>();
-		this.elementos=new ArrayList<reina>();
+		this.elementos=new ArrayList<Reina>();
 		Random rand= new Random();
 		int x,y;
 		for (int i = 0; i < tamaño; i++) {
@@ -21,11 +21,11 @@ public class Cromosoma {
 			x=rand.nextInt(filas.size());
 			y=rand.nextInt(columnas.size());
 			//System.out.println(x+","+y);
-			elementos.add( new reina(filas.get(x),columnas.get(y)));
+			elementos.add( new Reina(filas.get(x),columnas.get(y)));
 			filas.remove(x);
 			columnas.remove(y);
-			System.out.println(filas.toString());
-			System.out.println(columnas.toString());
+			//System.out.println(filas.toString());
+			//System.out.println(columnas.toString());
 		}
 		numeroAtaques = -1;
 		setElite(0);			
@@ -37,12 +37,12 @@ public class Cromosoma {
 		this.numeroAtaques = numeroAtaques;
 	}
 	public String toString() {
-		return "cromosoma=" + elementos ;
+		return "cromosoma=" + elementos + "Numero de Ataques = " + numeroAtaques;
 	}
-	public ArrayList<reina> getElementos() {
+	public ArrayList<Reina> getElementos() {
 		return elementos;
 	}
-	public void setElementos(ArrayList<reina> elementos) {
+	public void setElementos(ArrayList<Reina> elementos) {
 		this.elementos = elementos;
 	}
 	public void evaluarAtaques() {
@@ -55,9 +55,11 @@ public class Cromosoma {
 				if(elementos.get(i).getPosicionY() == elementos.get(j).getPosicionY()){
 					numeroAtaques++;
 				}
-				if(elementos.get(i).getPosicionX() == elementos.get(j).getPosicionY() && 
-				   elementos.get(i).getPosicionY() == elementos.get(j).getPosicionX()){
-					numeroAtaques++;
+				for (int x = 0; x < elementos.size(); x++){
+					if( (elementos.get(i).getPosicionY() - elementos.get(j).getPosicionY()) == 
+					    (elementos.get(i).getPosicionX() - elementos.get(j).getPosicionX()) ){
+						numeroAtaques++;
+					}
 				}
 			}
 			setNumeroAtaques(numeroAtaques);
