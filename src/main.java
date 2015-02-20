@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class main {
 	public static void main(String[] args) {
@@ -134,6 +135,37 @@ public class main {
 
 		}
 
+		return poblacionFinal;
+	}
+	public static ArrayList<Cromosoma> Mutacion(ArrayList <Cromosoma> poblacionFinal, int numReinas){
+		int numIteracion=1,aux,aux1,numMutacion,r1,r2,r3;
+		
+		numMutacion=(int)(poblacionFinal.size()*(.1));
+		while (numIteracion<=numMutacion){
+			Collections.shuffle(poblacionFinal);
+			Random rand= new Random();
+			r1=rand.nextInt(numReinas);
+			r2=rand.nextInt(2);
+			r3=rand.nextInt(numReinas);
+			if(r3==r1){
+				while(r3==r1){
+					r3=rand.nextInt(numReinas);
+				}
+			}
+				
+			if(r2==1){
+				aux=poblacionFinal.get(0).getElementos().get(r1).getPosicionX();
+				aux1=poblacionFinal.get(0).getElementos().get(r3).getPosicionX();
+				poblacionFinal.get(0).getElementos().get(r1).setPosicionX(aux1);
+				poblacionFinal.get(0).getElementos().get(r3).setPosicionX(aux);
+			}
+			if(r2==2){
+				aux=poblacionFinal.get(0).getElementos().get(r1).getPosicionY();
+				aux1=poblacionFinal.get(0).getElementos().get(r3).getPosicionY();
+				poblacionFinal.get(0).getElementos().get(r1).setPosicionY(aux1);
+				poblacionFinal.get(0).getElementos().get(r3).setPosicionY(aux);
+			}
+		}
 		return poblacionFinal;
 	}
 }
