@@ -41,37 +41,38 @@ public class main {
 				+ "\n" + poblacion.get(elite2).toString());
 	}
 
-	public static ArrayList<Cromosoma> cruza(int numeroReinas, ArrayList<Cromosoma> poblacionCruza) {
+	public static ArrayList<Cromosoma> cruza(int numeroReinas,
+			ArrayList<Cromosoma> poblacionCruza) {
 		// Cruza
 		// 80% de probabilidad de cruza
 		// Puntos de cruza en 40%||30%||30%
-		ArrayList<Cromosoma> poblacionFinal = new ArrayList<Cromosoma>();
 		ArrayList<Reina> temp1 = new ArrayList<Reina>();
 		ArrayList<Reina> temp2 = new ArrayList<Reina>();
-		int punto1Cruza, punto2Cruza, band = 0, band2 = 0;
+
+		ArrayList<Integer> filas_temp1 = new ArrayList<Integer>();
+		ArrayList<Integer> columnas_temp1 = new ArrayList<Integer>();
+		ArrayList<Integer> filas_temp2 = new ArrayList<Integer>();
+		ArrayList<Integer> columnas_temp2 = new ArrayList<Integer>();
+		int punto1Cruza, punto2Cruza, band = 0, band2 = 0, band3 = 0, band4 = 0, contFilas = 0, contColumnas = 0;
 		// Probabilidad de cruza del 80%
 		int numeroCruzas = (int) ((0.8) * (poblacionCruza.size()));
 		Collections.shuffle(poblacionCruza);
 		punto1Cruza = (int) ((0.4) * (numeroReinas));
 		punto2Cruza = (int) ((0.6) * (numeroReinas));
-		for (int i = 0; i < poblacionCruza.size(); i++) {
-			System.out.println(poblacionCruza.get(i).toString());
-		}
-		for (int i = 0; i < numeroReinas; i++) {
-			temp1.add(new Reina(-1, -1));
-			temp2.add(new Reina(-1, -1));
-		}
-		for (int i = 0; i < poblacionCruza.size(); i = i + 2) {
+		// for (int i = 0; i < poblacionCruza.size(); i++) {
+		// System.out.println(poblacionCruza.get(i).toString());
+		// }
+		for (int i = 0; i < numeroCruzas; i = i + 2) {
+			for (int i2 = 0; i2 < numeroReinas; i2++) {
+				temp1.add(new Reina(-1, -1));
+				temp2.add(new Reina(-1, -1));
+			}
 			for (int j = punto1Cruza; j < punto2Cruza; j++) {
 				temp1.set(j, poblacionCruza.get(i + 1).getElementos().get(j));
 				temp2.set(j, poblacionCruza.get(i).getElementos().get(j));
 			}
 			for (int j = 0; j < punto1Cruza; j++) {
 				for (int j2 = punto1Cruza; j2 < punto2Cruza; j2++) {
-					// System.out.println(poblacionCruza.get(i).getElementos().get(j).getPosicionX()
-					// + " != "+ temp1.get(j2).getPosicionX());
-					// System.out.println(poblacionCruza.get(i).getElementos().get(j).getPosicionY()
-					// + " != "+ temp1.get(j2).getPosicionY());
 					if ((poblacionCruza.get(i).getElementos().get(j)
 							.getPosicionX() != temp1.get(j2).getPosicionX())
 							&& (poblacionCruza.get(i).getElementos().get(j)
@@ -94,15 +95,12 @@ public class main {
 				if (band2 == (punto2Cruza - punto1Cruza)) {
 					temp2.set(j, poblacionCruza.get(i + 1).getElementos()
 							.get(j));
+
 				}
 				band2 = 0;
 			}
 			for (int j = punto2Cruza; j < numeroReinas; j++) {
 				for (int j2 = punto1Cruza; j2 < punto2Cruza; j2++) {
-					// System.out.println(poblacionCruza.get(i).getElementos().get(j).getPosicionX()
-					// + " != "+ temp1.get(j2).getPosicionX());
-					// System.out.println(poblacionCruza.get(i).getElementos().get(j).getPosicionY()
-					// + " != "+ temp1.get(j2).getPosicionY());
 					if ((poblacionCruza.get(i).getElementos().get(j)
 							.getPosicionX() != temp1.get(j2).getPosicionX())
 							&& (poblacionCruza.get(i).getElementos().get(j)
@@ -128,47 +126,136 @@ public class main {
 				}
 				band2 = 0;
 			}
-
-			System.out.println(" hijo1 " + temp1.toString());
-			System.out.println(" hijo2 " + temp2.toString());
-			System.out.println();
-
-		}
-
-		return poblacionFinal;
-	}
-	public static ArrayList<Cromosoma> Mutacion(ArrayList <Cromosoma> poblacionFinal, int numReinas){
-		int numIteracion=1,aux,aux1,numMutacion,r1,r2,r3,numElementos,numIteracion2=1;
-		
-		numMutacion=(int)(poblacionFinal.size()*(.2));
-		numElementos=(int) (numReinas*(.1));
-		while (numIteracion<=numMutacion){
-			Collections.shuffle(poblacionFinal);
-			Random rand= new Random();
-			numIteracion2=1;
-			while (numIteracion2<=numElementos){
-				r1=rand.nextInt(numReinas);
-				r2=rand.nextInt(2);
-				r3=rand.nextInt(numReinas);
-				if(r3==r1){
-					while(r3==r1){
-						r3=rand.nextInt(numReinas);
+			for (int j = 0; j < numeroReinas; j++) {
+				for (int j2 = 0; j2 < numeroReinas; j2++) {
+					if (j == temp1.get(j2).getPosicionX()) {
+						band3 = 1;
+					}
+					if (j == temp1.get(j2).getPosicionY()) {
+						band4 = 1;
 					}
 				}
-				if(r2==1){
-					aux=poblacionFinal.get(0).getElementos().get(r1).getPosicionX();
-					aux1=poblacionFinal.get(0).getElementos().get(r3).getPosicionX();
-					poblacionFinal.get(0).getElementos().get(r1).setPosicionX(aux1);
-					poblacionFinal.get(0).getElementos().get(r3).setPosicionX(aux);
+				if (band3 == 0) {
+					filas_temp1.add(j);
 				}
-				if(r2==2){
-					aux=poblacionFinal.get(0).getElementos().get(r1).getPosicionY();
-					aux1=poblacionFinal.get(0).getElementos().get(r3).getPosicionY();
-					poblacionFinal.get(0).getElementos().get(r1).setPosicionY(aux1);
-					poblacionFinal.get(0).getElementos().get(r3).setPosicionY(aux);
+				if (band4 == 0) {
+					columnas_temp1.add(j);
 				}
-			}		
-		}	
+				band3 = 0;
+				band4 = 0;
+			}
+			for (int j = 0; j < numeroReinas; j++) {
+				if (temp1.get(j).getPosicionX() == -1) {
+					temp1.get(j).setPosicionX(filas_temp1.get(contFilas));
+					contFilas++;
+				}
+				if (temp1.get(j).getPosicionY() == -1) {
+					temp1.get(j).setPosicionY(columnas_temp1.get(contColumnas));
+					contColumnas++;
+				}
+			}
+			contFilas = 0;
+			contColumnas = 0;
+			// System.out.println(filas_temp1.toString());
+			// System.out.println(columnas_temp1.toString());
+			filas_temp1.clear();
+			columnas_temp1.clear();
+			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			// ++++++++++++++++++++++++++++++++Hijo 2
+			for (int j = 0; j < numeroReinas; j++) {
+				for (int j2 = 0; j2 < numeroReinas; j2++) {
+					if (j == temp2.get(j2).getPosicionX()) {
+						band3 = 1;
+					}
+					if (j == temp2.get(j2).getPosicionY()) {
+						band4 = 1;
+					}
+				}
+				if (band3 == 0) {
+					filas_temp2.add(j);
+				}
+				if (band4 == 0) {
+					columnas_temp2.add(j);
+				}
+				band3 = 0;
+				band4 = 0;
+			}
+			for (int j = 0; j < numeroReinas; j++) {
+				if (temp2.get(j).getPosicionX() == -1) {
+					temp2.get(j).setPosicionX(filas_temp2.get(contFilas));
+					contFilas++;
+				}
+				if (temp2.get(j).getPosicionY() == -1) {
+					temp2.get(j).setPosicionY(columnas_temp2.get(contColumnas));
+					contColumnas++;
+				}
+			}
+			contFilas = 0;
+			contColumnas = 0;
+			// System.out.println(filas_temp2.toString());
+			// System.out.println(columnas_temp2.toString());
+			filas_temp2.clear();
+			columnas_temp2.clear();
+			System.out.println();
+			System.out.println(poblacionCruza.get(i).toString());
+			System.out.println(poblacionCruza.get(i + 1).toString());
+
+			poblacionCruza.get(i)
+					.setElementos((ArrayList<Reina>) temp1.clone());
+			poblacionCruza.get(i + 1).setElementos(
+					(ArrayList<Reina>) temp2.clone());
+			// System.out.println();
+			System.out.println("hijo1" + poblacionCruza.get(i).toString());
+			System.out.println("hijo2" + poblacionCruza.get(i + 1).toString());
+
+			temp1.clear();
+			temp2.clear();
+
+		}
+		return poblacionCruza;
+	}
+
+	public static ArrayList<Cromosoma> Mutacion(
+			ArrayList<Cromosoma> poblacionFinal, int numReinas) {
+		int numIteracion = 1, aux, aux1, numMutacion, r1, r2, r3, numElementos, numIteracion2 = 1;
+
+		numMutacion = (int) (poblacionFinal.size() * (.2));
+		numElementos = (int) (numReinas * (.1));
+		while (numIteracion <= numMutacion) {
+			Collections.shuffle(poblacionFinal);
+			Random rand = new Random();
+			numIteracion2 = 1;
+			while (numIteracion2 <= numElementos) {
+				r1 = rand.nextInt(numReinas);
+				r2 = rand.nextInt(2);
+				r3 = rand.nextInt(numReinas);
+				if (r3 == r1) {
+					while (r3 == r1) {
+						r3 = rand.nextInt(numReinas);
+					}
+				}
+				if (r2 == 1) {
+					aux = poblacionFinal.get(0).getElementos().get(r1)
+							.getPosicionX();
+					aux1 = poblacionFinal.get(0).getElementos().get(r3)
+							.getPosicionX();
+					poblacionFinal.get(0).getElementos().get(r1)
+							.setPosicionX(aux1);
+					poblacionFinal.get(0).getElementos().get(r3)
+							.setPosicionX(aux);
+				}
+				if (r2 == 2) {
+					aux = poblacionFinal.get(0).getElementos().get(r1)
+							.getPosicionY();
+					aux1 = poblacionFinal.get(0).getElementos().get(r3)
+							.getPosicionY();
+					poblacionFinal.get(0).getElementos().get(r1)
+							.setPosicionY(aux1);
+					poblacionFinal.get(0).getElementos().get(r3)
+							.setPosicionY(aux);
+				}
+			}
+		}
 		return poblacionFinal;
 	}
 }
