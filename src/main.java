@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class main {
@@ -15,6 +16,11 @@ public class main {
 		// Elitismo de 20%
 		tamElitismo = (int) ((0.2) * (poblacion.size()));
 		seleccion(poblacion, tamElitismo);
+		for (int i = 0; i < tamElitismo; i++) {
+			if(poblacion.get(i).getElite() == 1){
+				System.out.println("Elite\n" + poblacion.get(i).toString());
+			}
+		}
 	}
 
 	public static void seleccion(ArrayList<Cromosoma> poblacion, int tamElitismo) {
@@ -23,22 +29,18 @@ public class main {
 			poblacion.get(i).evaluarAtaques();
 			System.out.println(poblacion.get(i).toString());
 		}
+		Collections.sort(poblacion, new Comparator<Cromosoma>() {
+	        @Override
+	        public int compare(Cromosoma  cromosoma1, Cromosoma  cromosoma2)
+	        {
 
-		int elite1 = 0, elite2 = 1;
-
-		for (int i = 2; i < poblacion.size(); i++) {
-			if (poblacion.get(elite1).getNumeroAtaques() > poblacion.get(i)
-					.getNumeroAtaques()) {
-				elite1 = i;
-			} else if (poblacion.get(elite2).getNumeroAtaques() > poblacion
-					.get(i).getNumeroAtaques()) {
-				elite2 = i;
-			}
+	            return  Integer.valueOf(cromosoma1.getNumeroAtaques()).compareTo(cromosoma2.getNumeroAtaques());
+	        }
+	    });
+		
+		for (int i = 0; i < tamElitismo; i++) {
+			poblacion.get(i).setElite(1);
 		}
-		poblacion.get(elite1).setElite(1);
-		poblacion.get(elite2).setElite(1);
-		System.out.println("Elites:\n" + poblacion.get(elite1).toString()
-				+ "\n" + poblacion.get(elite2).toString());
 	}
 
 	public static ArrayList<Cromosoma> cruza(int numeroReinas,
