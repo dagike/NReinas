@@ -6,7 +6,7 @@ import java.util.Random;
 public class main {
 	public static void main(String[] args) {
 		ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
-		int numeroReinas = 9, tamPoblacion = 10, tamElitismo;
+		int numeroReinas = 9, tamPoblacion = 10, tamElitismo, generacion = 0;
 		// Numero de reinas = tamaño
 		// Crear poblacion
 		for (int i = 0; i < tamPoblacion; i++) {
@@ -14,12 +14,20 @@ public class main {
 			System.out.println(poblacion.get(i).toString());
 		}
 		// Elitismo de 20%
-		tamElitismo = (int) ((0.2) * (poblacion.size()));
-		seleccion(poblacion, tamElitismo);
-		for (int i = 0; i < tamElitismo; i++) {
-			if(poblacion.get(i).getElite() == 1){
-				System.out.println("Elite\n" + poblacion.get(i).toString());
+		while(generacion<5){
+			tamElitismo = (int) ((0.2) * (poblacion.size()));
+			seleccion(poblacion, tamElitismo);
+			for (int i = 0; i < tamElitismo; i++) {
+				if(poblacion.get(i).getElite() == 1){
+					System.out.println("Elite\n" + poblacion.get(i).toString());
+				}
 			}
+			System.out.println("\nCRUZA\n");
+			poblacion = cruza(numeroReinas, poblacion);
+			System.out.println("\nMUTACION\n");
+			poblacion = Mutacion(poblacion, numeroReinas);
+			System.out.println("\nNUEVA GENERACION\n");
+			generacion++;
 		}
 	}
 
