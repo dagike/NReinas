@@ -227,17 +227,26 @@ public class main {
 
 	public static ArrayList<Cromosoma> Mutacion(
 			ArrayList<Cromosoma> poblacionFinal, int numReinas) {
-		int numIteracion = 1, aux, aux1, numMutacion, r1, r2, r3, numElementos, numIteracion2 = 1;
-
+		int numIteracion = 1, aux, aux1, numMutacion, r1, r2, r3, numElementos, numIteracion2 = 1,i;
 		numMutacion = (int) (poblacionFinal.size() * (.2));
 		numElementos = (int) (numReinas * (.1));
+		numIteracion=1;
 		while (numIteracion <= numMutacion) {
 			Collections.shuffle(poblacionFinal);
+			System.out.println("Poblacion a Mutar" + poblacionFinal.get(0).toString());
+			numElementos = (int) (numReinas * (.1));
 			Random rand = new Random();
 			numIteracion2 = 1;
+			if(numElementos==0){
+				numElementos=1;
+			}
+			numIteracion2=1;
 			while (numIteracion2 <= numElementos) {
 				r1 = rand.nextInt(numReinas);
-				r2 = rand.nextInt(2);
+				r2 = rand.nextInt(3);
+				while(r2==0){
+					r2=rand.nextInt(3);
+				}
 				r3 = rand.nextInt(numReinas);
 				if (r3 == r1) {
 					while (r3 == r1) {
@@ -249,6 +258,8 @@ public class main {
 							.getPosicionX();
 					aux1 = poblacionFinal.get(0).getElementos().get(r3)
 							.getPosicionX();
+					System.out.println("Primer elemento a mutar en X:"+aux);
+					System.out.println("Segundo elemento a mutar en X:"+aux1);
 					poblacionFinal.get(0).getElementos().get(r1)
 							.setPosicionX(aux1);
 					poblacionFinal.get(0).getElementos().get(r3)
@@ -259,13 +270,19 @@ public class main {
 							.getPosicionY();
 					aux1 = poblacionFinal.get(0).getElementos().get(r3)
 							.getPosicionY();
+					System.out.println("Primer elemento a mutar en Y:"+aux);
+					System.out.println("Segundo elemento a mutar en Y:"+aux1);
 					poblacionFinal.get(0).getElementos().get(r1)
 							.setPosicionY(aux1);
 					poblacionFinal.get(0).getElementos().get(r3)
 							.setPosicionY(aux);
 				}
+				numIteracion=numIteracion+1;
+				numIteracion2=numIteracion2+1;
 			}
+			System.out.println("PoblacionMutada" + poblacionFinal.get(0).toString());
 		}
+		
 		return poblacionFinal;
 	}
 }
