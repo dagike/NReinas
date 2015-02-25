@@ -28,9 +28,6 @@ public class Cromosoma {
 		}
 		numeroAtaques = -1;			
 	}
-	public Cromosoma(ArrayList<Reina> elementos){
-		this.elementos = new ArrayList<Reina>(elementos);
-	}
 	public int getNumeroAtaques() {
 		return numeroAtaques;
 	}

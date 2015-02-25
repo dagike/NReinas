@@ -7,7 +7,7 @@ import java.util.Random;
 public class TestNReinas {
 	public static void main(String[] args) {
 		ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
-		int numeroReinas = 9, tamPoblacion = 10, tamElitismo, generacion = 0, numeroGeneraciones = 1;
+		int numeroReinas = 9, tamPoblacion = 10, tamElitismo, generacion = 0, numeroGeneraciones = 5;
 		// Numero de reinas = tamaño
 		// Crear poblacion
 		for (int i = 0; i < tamPoblacion; i++) {
@@ -17,39 +17,67 @@ public class TestNReinas {
 		tamElitismo = (int) ((0.2) * (poblacion.size()));
 		// Elitismo de 20%
 		while(generacion<numeroGeneraciones){
-			System.out.println("\nNUEVA GENERACION\n");
-			System.out.println("GENERACION: " + generacion );
+			System.out.println("\n GENERACION: " + generacion );
+			
 			ordenar(poblacion);
+			
 			for (int i = 0; i < poblacion.size(); i++) {
 				System.out.println(poblacion.get(i).toString());
 			}
-			ArrayList<Cromosoma> nuevaPoblacion = new ArrayList<Cromosoma>(tamElitismo);
 			
+			ordenar(poblacion);
+			
+			System.out.println("\nSELECCION");
+
+			ArrayList<Cromosoma> nuevaPoblacion = new ArrayList<Cromosoma>(tamElitismo);
+			seleccion(poblacion, nuevaPoblacion, tamElitismo, numeroReinas);
+			for(int i = 0; i < tamElitismo; i++)
+				System.out.println(nuevaPoblacion.get(i).toString());
+
+
 			System.out.println("\nCRUZA\n");
 			poblacion = cruza(numeroReinas, poblacion);
 
 			System.out.println("\nMUTACION\n");
 			poblacion = Mutacion(poblacion, numeroReinas);
-
-			poblacion = nuevaGeneracion(poblacion, nuevaPoblacion);
 			
-			System.out.println("Resultado " + (generacion+1));
+			System.out.println("\nNUEVA GENERACION\n");
+			nuevaGeneracion(poblacion, nuevaPoblacion, tamPoblacion);
+			
+			System.out.println("RESULTADO " + (generacion+1) + " POBLACION " + poblacion.size());
+			nuevaPoblacion.clear();
 			ordenar(poblacion);
 			for (int i = 0; i < poblacion.size(); i++) {
 				System.out.println(poblacion.get(i).toString());
 			}
+
 			generacion++;
 		} 
 	}
 
-	private static ArrayList<Cromosoma> nuevaGeneracion(ArrayList<Cromosoma> poblacion, ArrayList<Cromosoma> nuevaPoblacion) {
-		for(int i = 0;i<nuevaPoblacion.size();i++){
-			poblacion.remove(nuevaPoblacion.size()-i);
+	private static void seleccion(ArrayList<Cromosoma> poblacion, ArrayList<Cromosoma> nuevaPoblacion, int tamElitismo, int numeroReinas) {
+		for(int i = 0; i < tamElitismo; i++){
+			ArrayList<Reina> temp = new ArrayList<Reina>();
+			for(int j = 0; j < numeroReinas; j++){
+				temp.add(new Reina(poblacion.get(i).getElementos().get(j).getPosicionX(),poblacion.get(i).getElementos().get(j).getPosicionX()) );
+			}
+			nuevaPoblacion.add(new Cromosoma(numeroReinas));
+			nuevaPoblacion.get(i).setElementos((ArrayList<Reina>) temp.clone());
+			nuevaPoblacion.get(i).setNumeroAtaques(poblacion.get(i).getNumeroAtaques());
+			temp.clear();
 		}
+	}
+	private static void nuevaGeneracion(ArrayList<Cromosoma> poblacion, ArrayList<Cromosoma> nuevaPoblacion,int tamPoblacion) {
+		System.out.println("*******"+poblacion.size()+"-"+nuevaPoblacion.size()+"="+(poblacion.size()-nuevaPoblacion.size()));
+		for(int i = 0; i < nuevaPoblacion.size(); i++){
+			System.out.println("i:" + i  +" " + poblacion.size());
+			poblacion.remove(poblacion.size()-1-i);
+		}
+		System.out.println("NUEVA POBLACION");
 		for(int i = 0;i<nuevaPoblacion.size();i++){
 			poblacion.add(nuevaPoblacion.get(i));
+			System.out.println(nuevaPoblacion.get(i).toString());
 		}
-		return poblacion;
 	}
 
 	public static void ordenar(ArrayList<Cromosoma> poblacion) {
@@ -225,14 +253,14 @@ public class TestNReinas {
 		return poblacionCruza;
 	}
 
-	public static ArrayList<Cromosoma> Mutacion(
-			ArrayList<Cromosoma> poblacionFinal, int numReinas) {
+	public static ArrayList<Cromosoma> Mutacion(ArrayList<Cromosoma> poblacionFinal, int numReinas) {
 		int numIteracion = 1, aux, aux1, numMutacion, r1, r2, r3, numElementos, numIteracion2 = 1;
 		numMutacion = (int) (poblacionFinal.size() * (.2));
 		numElementos = (int) (numReinas * (.1));
 		numIteracion=1;
 		while (numIteracion <= numMutacion) {
 			Collections.shuffle(poblacionFinal);
+//			System.out.println("Poblacion a Mutar" + poblacionFinal.get(0).toString());
 			numElementos = (int) (numReinas * (.1));
 			Random rand = new Random();
 			numIteracion2 = 1;
@@ -255,21 +283,25 @@ public class TestNReinas {
 				if (r2 == 1) {
 					aux = poblacionFinal.get(0).getElementos().get(r1).getPosicionX();
 					aux1 = poblacionFinal.get(0).getElementos().get(r3).getPosicionX();
+//					System.out.println("Primer elemento a mutar en X:"+aux);
+//					System.out.println("Segundo elemento a mutar en X:"+aux1);
 					poblacionFinal.get(0).getElementos().get(r1).setPosicionX(aux1);
 					poblacionFinal.get(0).getElementos().get(r3).setPosicionX(aux);
 				}
 				if (r2 == 2) {
-					aux = poblacionFinal.get(0).getElementos().get(r1)
-							.getPosicionY();
-					aux1 = poblacionFinal.get(0).getElementos().get(r3)
-							.getPosicionY();
+					aux = poblacionFinal.get(0).getElementos().get(r1).getPosicionY();
+					aux1 = poblacionFinal.get(0).getElementos().get(r3).getPosicionY();
+//					System.out.println("Primer elemento a mutar en Y:"+aux);
+//					System.out.println("Segundo elemento a mutar en Y:"+aux1);
 					poblacionFinal.get(0).getElementos().get(r1).setPosicionY(aux1);
 					poblacionFinal.get(0).getElementos().get(r3).setPosicionY(aux);
 				}
 				numIteracion=numIteracion+1;
 				numIteracion2=numIteracion2+1;
 			}
+//			System.out.println("PoblacionMutada" + poblacionFinal.get(0).toString());
 		}
+		
 		return poblacionFinal;
 	}
 }
