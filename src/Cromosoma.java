@@ -3,8 +3,7 @@ import java.util.Random;
 
 public class Cromosoma {
 	private ArrayList<Reina> elementos;
-	private int numeroAtaques; 
-	private int elite;			//0 = No Elite, 1 = Elite
+	private int numeroAtaques;
 	
 	public Cromosoma(int tamano) {
 		super();
@@ -27,8 +26,10 @@ public class Cromosoma {
 			//System.out.println(filas.toString());
 			//System.out.println(columnas.toString());
 		}
-		numeroAtaques = -1;
-		setElite(0);			
+		numeroAtaques = -1;			
+	}
+	public Cromosoma(ArrayList<Reina> elementos){
+		this.elementos = new ArrayList<Reina>(elementos);
 	}
 	public int getNumeroAtaques() {
 		return numeroAtaques;
@@ -37,7 +38,7 @@ public class Cromosoma {
 		this.numeroAtaques = numeroAtaques;
 	}
 	public String toString() {
-		return "cromosoma=" + elementos + "Numero de Ataques = " + numeroAtaques;
+		return "cromosoma=" + elementos + " Numero de Ataques = " + numeroAtaques;
 	}
 	public ArrayList<Reina> getElementos() {
 		return elementos;
@@ -55,21 +56,12 @@ public class Cromosoma {
 				if(elementos.get(i).getPosicionY() == elementos.get(j).getPosicionY()){
 					numeroAtaques++;
 				}
-				for (int x = 0; x < elementos.size(); x++){
-					if( (elementos.get(i).getPosicionY() - elementos.get(j).getPosicionY()) == 
-					    (elementos.get(i).getPosicionX() - elementos.get(j).getPosicionX()) ){
-						numeroAtaques++;
-					}
+				if( Math.abs(elementos.get(i).getPosicionY() - elementos.get(j).getPosicionY()) == 
+				    Math.abs(elementos.get(i).getPosicionX() - elementos.get(j).getPosicionX()) ){
+					numeroAtaques++;
 				}
 			}
 			setNumeroAtaques(numeroAtaques);
 		}
 	}
-	public int getElite() {
-		return elite;
-	}
-	public void setElite(int elite) {
-		this.elite = elite;
-	}
-
 }
