@@ -41,10 +41,14 @@ public class TestNReinas {
 			System.out.println("\nMUTACION\n");
 			poblacion = Mutacion(poblacion, numeroReinas);
 			
+			for (int i = 0; i < poblacion.size(); i++) {
+				System.out.println(poblacion.get(i).toString());
+			}
+			
 			System.out.println("\nNUEVA GENERACION\n");
 			nuevaGeneracion(poblacion, nuevaPoblacion, tamPoblacion);
 			
-			System.out.println("RESULTADO " + (generacion+1) + " POBLACION " + poblacion.size());
+			System.out.println("\nRESULTADO " + (generacion+1) + " POBLACION " + poblacion.size());
 			nuevaPoblacion.clear();
 			ordenar(poblacion);
 			for (int i = 0; i < poblacion.size(); i++) {
@@ -68,9 +72,7 @@ public class TestNReinas {
 		}
 	}
 	private static void nuevaGeneracion(ArrayList<Cromosoma> poblacion, ArrayList<Cromosoma> nuevaPoblacion,int tamPoblacion) {
-		System.out.println("*******"+poblacion.size()+"-"+nuevaPoblacion.size()+"="+(poblacion.size()-nuevaPoblacion.size()));
 		for(int i = 0; i < nuevaPoblacion.size(); i++){
-			System.out.println("i:" + i  +" " + poblacion.size());
 			poblacion.remove(poblacion.size()-1-i);
 		}
 		System.out.println("NUEVA POBLACION");
