@@ -7,7 +7,7 @@ import java.util.Random;
 public class TestNReinas {
 	public static void main(String[] args) {
 		ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
-		int numeroReinas = 9, tamPoblacion = 10, tamElitismo, generacion = 0, numeroGeneraciones = 5;
+		int numeroReinas = 9, tamPoblacion = 10, tamElitismo, generacion = 0, numeroGeneraciones = 30;
 		// Numero de reinas = tamaño
 		// Crear poblacion
 		for (int i = 0; i < tamPoblacion; i++) {
@@ -27,43 +27,40 @@ public class TestNReinas {
 			
 			ordenar(poblacion);
 			
-			System.out.println("\nSELECCION");
+//			System.out.println("\nSELECCION");
 
 			ArrayList<Cromosoma> nuevaPoblacion = new ArrayList<Cromosoma>(tamElitismo);
 			seleccion(poblacion, nuevaPoblacion, tamElitismo, numeroReinas);
-			for(int i = 0; i < tamElitismo; i++)
-				System.out.println(nuevaPoblacion.get(i).toString());
+//			for(int i = 0; i < tamElitismo; i++)
+//				System.out.println(nuevaPoblacion.get(i).toString());
 
 
-			System.out.println("\nCRUZA\n");
+//			System.out.println("\nCRUZA\n");
 			poblacion = cruza(numeroReinas, poblacion);
 
-			System.out.println("\nMUTACION\n");
+//			System.out.println("\nMUTACION\n");
 			poblacion = Mutacion(poblacion, numeroReinas);
 			
-			for (int i = 0; i < poblacion.size(); i++) {
-				System.out.println(poblacion.get(i).toString());
-			}
-			
-			System.out.println("\nNUEVA GENERACION\n");
+//			System.out.println("\nPOBLACION ELITE\n");
 			nuevaGeneracion(poblacion, nuevaPoblacion, tamPoblacion);
 			
 			System.out.println("\nRESULTADO " + (generacion+1) + " POBLACION " + poblacion.size());
 			nuevaPoblacion.clear();
 			ordenar(poblacion);
-			for (int i = 0; i < poblacion.size(); i++) {
-				System.out.println(poblacion.get(i).toString());
-			}
 
 			generacion++;
 		} 
+		for (int i = 0; i < poblacion.size(); i++) {
+			System.out.println(poblacion.get(i).toString());
+		}
 	}
 
 	private static void seleccion(ArrayList<Cromosoma> poblacion, ArrayList<Cromosoma> nuevaPoblacion, int tamElitismo, int numeroReinas) {
+		
 		for(int i = 0; i < tamElitismo; i++){
 			ArrayList<Reina> temp = new ArrayList<Reina>();
 			for(int j = 0; j < numeroReinas; j++){
-				temp.add(new Reina(poblacion.get(i).getElementos().get(j).getPosicionX(),poblacion.get(i).getElementos().get(j).getPosicionX()) );
+				temp.add(new Reina(poblacion.get(i).getElementos().get(j).getPosicionX(),poblacion.get(i).getElementos().get(j).getPosicionY()) );
 			}
 			nuevaPoblacion.add(new Cromosoma(numeroReinas));
 			nuevaPoblacion.get(i).setElementos((ArrayList<Reina>) temp.clone());
@@ -75,10 +72,8 @@ public class TestNReinas {
 		for(int i = 0; i < nuevaPoblacion.size(); i++){
 			poblacion.remove(poblacion.size()-1-i);
 		}
-		System.out.println("NUEVA POBLACION");
 		for(int i = 0;i<nuevaPoblacion.size();i++){
 			poblacion.add(nuevaPoblacion.get(i));
-			System.out.println(nuevaPoblacion.get(i).toString());
 		}
 	}
 
